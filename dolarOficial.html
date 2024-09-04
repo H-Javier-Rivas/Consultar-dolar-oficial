@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="es-ES">
+<head>
+  <meta charset="utf-8">
+  <title>Dolar oficial</title>
+</head>
+<body>
+<p>Tasa del dólar BCV hoy: <span id="cambio-dolar"></span></p>
+
+<script>
+async function getExchangeRate() {
+  try {
+    const response = await fetch("https://ve.dolarapi.com/v1/dolares/oficial")
+  .then(response => response.json())
+  //.then(data => console.log(data.promedio));
+  .then(data => document.getElementById('cambio-dolar').textContent = `${data.promedio}`);
+  } catch (error) {
+    console.error('Error al obtener la tasa de cambio:', error);
+  }
+}
+
+getExchangeRate();
+
+</script>
+</body>
+</html>
