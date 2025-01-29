@@ -1,26 +1,25 @@
-<!doctype html>
-<html lang="es-ES">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="utf-8">
-  <title>Dolar oficial</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dolar BCV</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<p>Tasa del dólar BCV hoy: <span id="cambio-dolar"></span></p>
+    <div class="container">
+        <h1>Calculadora de Tasa de Cambio</h1>
+        <p>Convierte dólares a bolívares al instante. <br />
+           Tasa del dólar BCV actual: <span id="cambio-dolar"></span>
+        </p>
+        <p></p>
+        <div class="converter">
+            <input type="number" id="amount" placeholder="Monto en USD">
+            <button id="convert">Convertir</button>
+            <div id="result"></div>
+        </div>
+    </div>
 
-<script>
-async function getExchangeRate() {
-  try {
-    const response = await fetch("https://ve.dolarapi.com/v1/dolares/oficial")
-  .then(response => response.json())
-  //.then(data => console.log(data.promedio));
-  .then(data => document.getElementById('cambio-dolar').textContent = `${data.promedio}`);
-  } catch (error) {
-    console.error('Error al obtener la tasa de cambio:', error);
-  }
-}
-
-getExchangeRate();
-
-</script>
+    <script src="script.js"></script>
 </body>
 </html>
