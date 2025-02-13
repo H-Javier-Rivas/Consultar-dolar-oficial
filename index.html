@@ -10,16 +10,30 @@
     <div class="container">
         <h1>Calculadora de Tasa de Cambio</h1>
         <p>Convierte dólares a bolívares al instante. <br />
-           Tasa del dólar BCV actual: <span id="cambio-dolar"></span>
+            Tasa del dólar BCV actual: <b><span id="cambio-dolar"></span></b>
         </p>
         <p></p>
         <div class="converter">
-            <input type="number" id="amount" placeholder="Monto en USD">
-            <button id="convert">Convertir</button>
-            <div id="result"></div>
+            <input type="number" id="amount" placeholder="Monto">
+            <button id="convert">Convertir USD a Bs.</button>
+            <p>Monto en bolívares: <span id="result">0.00</span></p>
         </div>
-    </div>
 
-    <script src="script.js"></script>
+        <div class="calcular">
+            <button id="sumar">&#x2935</button>
+            <span style="font-size: 2rem;">&#x1F6D2;</span>
+            <button id="restar">&#x2934</button>
+        </div>
+        <hr />
+        <div>
+            <div class="totales">
+                <h1>Total a pagar &#x1F4B8</h1>
+                <p>Bs. <span id="bolivares">0.00</span></p>
+                <p>Monto en dolares: <span id="dolares">0.00</span></p>
+            </div>
+        </div>
+
+        <script src="script.js"></script>
 </body>
+
 </html>
