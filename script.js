@@ -25,9 +25,10 @@ async function updateExchangeRate() {
 updateExchangeRate();  // Actualizar la tasa de cambio al cargar la página
 
 document.getElementById('amount').addEventListener('input', function () {
-    const amount = parseFloat(document.getElementById('amount').value);
+    let amount = parseFloat(document.getElementById('amount').value);
     if (isNaN(amount)) {
-        alert('Por favor, ingresa un monto válido.');
+        // alert('Por favor, ingresa un monto válido.');
+        amount = 0.00;
         return;
     }
     document.getElementById('result').innerText = `${amount.toFixed(2)}`;
@@ -40,9 +41,9 @@ document.getElementById('convert').addEventListener('click', async function () {
         return;
     }
 
-    const exchangeRate = await getExchangeRate();
-    if (exchangeRate) {
-        const result = amount * exchangeRate;
+    const tasa = parseFloat(document.getElementById('cambio-dolar').textContent);
+    if (tasa) {
+        const result = amount * tasa;
         document.getElementById('result').innerText = `${result.toFixed(2)}`;
     } else {
         document.getElementById('result').innerText = 'Error al obtener la tasa de cambio';
@@ -54,7 +55,7 @@ document.getElementById('sumar').addEventListener('click', function () {
     let resultadoNum = parseFloat(document.getElementById('result').textContent);
     let tasa = parseFloat(document.getElementById('cambio-dolar').textContent);
 
-    if (isNaN(bolivaresAcum)) bolivaresAcum = 0.00;    
+    if (isNaN(bolivaresAcum)) bolivaresAcum = 0.00;
 
     bolivaresAcum += resultadoNum;
     document.getElementById('bolivares').innerText = `${bolivaresAcum.toFixed(2)}`;
@@ -68,7 +69,7 @@ document.getElementById('restar').addEventListener('click', function () {
     let resultadoNum = parseFloat(document.getElementById('result').textContent);
     let tasa = parseFloat(document.getElementById('cambio-dolar').textContent);
 
-    if (isNaN(bolivaresAcum)) bolivaresAcum = 0.00;    
+    if (isNaN(bolivaresAcum)) bolivaresAcum = 0.00;
 
     bolivaresAcum -= resultadoNum;
     document.getElementById('bolivares').innerText = `${bolivaresAcum.toFixed(2)}`;
