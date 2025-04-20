@@ -1,25 +1,36 @@
 /* styles.css */
+:root {
+	--primary:	#A5C882;
+	--secondary:	#033F49;
+	--light:	#FFF;
+	--dark:		#000;
+	--diabled:	#E7E7E7;
+}
+
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f9;
-    margin: 0;
+    font-family: 'lato', sans-serif;
+	margin: 0;
     padding: 0;
-    color: #333;
-    display: flex;
-    justify-content: center;
+	height: 100vh;
+	background-color: var(--diabled);
+    color: var(--secondary);
+}
+
+*:first-letter {
+    text-transform: capitalize;
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    /* align-items: center; */
-    text-align: center;
-    background: white;
+    background: var(--light);
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.container > * {
+    text-align: center;
 }
 
 h1 {
@@ -35,8 +46,8 @@ p {
 
 .converter {
     display: flex;
-    /* flex-direction: column; */
     gap: 1rem;
+    justify-content: center;
 }
 
 input[type="number"] {
@@ -44,7 +55,7 @@ input[type="number"] {
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 1rem;
-    width: 100%;
+    max-width: 150px;
     box-sizing: border-box;
 }
 
@@ -57,21 +68,118 @@ button {
     transition: background-color 0.3s ease;
 }
 
+#sumar, 
+#restar {
+    border-radius: 50%;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+#bye-bye {
+    border-radius: 50%;
+    font-weight: 600;
+    font-size: 2rem;
+}
+
 button:hover {
     background-color: #509c6d;
     color: white;
 }
 
-.calcular p, .totales .bolivares{
+.calcular p {
     font-size: 1.25rem;
     font-weight: bold;
     color: #1386eb;
 }
 
-.totales .dolares{
+.totales .bolivares > * {
+    display: inline-flex;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #1386eb;
+
+}
+
+.totales .dolares {
     font-size: 1.25rem;
     font-weight: bold;
     color: #00977b;
+}
+
+.roundBorder {
+	border-radius: 5px;
+}
+
+.list {
+	margin: 25px auto;
+	padding: 25px;
+	background-color: var(--light);
+	width: 100%;
+	max-width: 350px;
+}
+
+.date {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.dateRight {
+	display: flex;
+	align-items: center;
+}
+
+#dateNumber {
+	font-size: 50px;
+}
+
+#dateText {
+	letter-spacing: 3px;
+	text-transform: uppercase;
+}
+
+#dateMonth,
+#dateYear {
+	margin-left: 7px;
+	font-size: 20px;
+}
+
+form {
+	margin: 20px 0;
+	display: flex;
+    justify-content: center;
+    gap: 15px;
+    align-items: center;
+}
+
+input {
+	border: none;
+	padding: 15px 10px;
+	background-color: var(--diabled);
+}
+
+input:focus {
+	outline: none;
+}
+
+.addTaskButton {
+	font-size: 18px;
+	background-color: var(--diabled);
+}
+
+.task {
+	background-color: var(--primary);
+	padding: 15px;
+	margin-top: 15px;
+	color: var(--secondary);
+    text-align: left;
+    cursor: pointer;
+}
+
+.done {
+	background-color: var(--diabled);
+	text-decoration: line-through;
+	color: var(--dark);
 }
 
 /* Responsive Design */

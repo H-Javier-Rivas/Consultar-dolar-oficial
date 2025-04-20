@@ -1,37 +1,81 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="./carrito-de-compras.png">
-    <title>Dolar BCV</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
-        <h1>Calculadora de Tasa de Cambio</h1>
-        <p>Convierte dólares a bolívares al instante. <br />
-            Tasa del dólar BCV actual: <b><span id="cambio-dolar"></span></b>
-        </p>
-        <div class="converter">
-            <input type="number" id="amount" placeholder="Monto">
-            <button id="convert">Convertir USD a Bs.</button>
-        </div>
-        <div class="calcular">
-            <p>Monto en bolívares: <span id="result">0.00</span></p>
-            <button id="sumar">Sumar &#x2935</button>
-            <span style="font-size: 2rem;">&#x1F6D2;</span>
-            <button id="restar">Restar &#x2934</button>
-        </div>
-        <div class="totales">
-            <hr />
-            <h1>Total a pagar &#x1F4B8</h1>
-            <p class="bolivares">Bs. <span id="bolivares">0.00</span></p>
-            <p class="dolares">Monto en dolares: <span id="dolares">0.00</span></p>
-        </div>
-    <div>
 
-    <script src="script.js"></script>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Calculadora de tasa de cambio de dolares a bolivares.">
+  <meta name="keywords" content="dolar, bolivares, tasa de cambio, calculadora, dolares a bolivares, dolar BCV">
+  <meta name="author" content="Hernán Javier Rivas Arias">
+  <meta name="theme-color" content="#ffffff">
+  <title>Dolar BCV</title>
+  <link rel="icon" type="image/png" href="./carrito-de-compras.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" type="text/javascript" defer></script>
+</head>
+
+<body>
+  <header class="date">
+    <div class="dateRight">
+      <div id="dateNumber"></div>
+      <div>
+        <div id="dateMonth"></div>
+        <div id="dateYear"></div>
+      </div>
+    </div>
+    <div id="dateText"></div>
+  </header>
+
+  <main class="container">
+    <h1>Calculadora de Mercado</h1> 
+    <p><b>Tasa BCV de hoy: <span id="cambio-dolar"></span></b></p>    
+
+    <!-- <h1>Calculadora de Tasa de Cambio</h1> -->
+    <div class="converter">
+      <input type="number" id="precio-ref" placeholder="Precio/Ref" required>
+      <div class="currency-toggle">
+        <label>
+            <input type="radio" name="currency" value="bolivares" id="precio-bs-chk" checked>
+          Bs
+        </label>
+        <label>
+          <input type="radio" name="currency" value="dolares" id="precio-dolar-chk">
+          $
+        </label>
+      </div>
+    </div>
+    <div class="calcular">
+      <p>Monto en bolívares: <span id="precio-bs">0.00</span></p>
+      <button id="sumar">➕</button>
+      <span style="font-size: 2rem;">&#x1F6D2;</span>
+      <button id="restar">➖</button>
+      <hr />
+    </div>
+    <div class="totales">
+      <h1>Total a pagar</h1>
+      <div class="bolivares">
+        <p >Bs. </p>
+        <p id="bolivares">0.00</p>
+        <button id="bye-bye">💸</button>
+      </div>
+      <p class="dolares">Monto en dólares: $ <span id="dolares">0.00</span></p>
+      <hr />
+    </div>
+    <div>
+      <h1>Compras pendientes</h1>
+      <form onsubmit="addNewTask(event)">
+        <input type="text" name="taskText" autocomplete="off" placeholder="Nuevo item" class="roundBorder"></input>
+        <button type="submit" class="addTaskButton" title="Anotar">📝</button>
+        <button type="button" class="orderButton roundBorder" onclick="renderOrderedTasks()" title="¿Qué falta?">👀</button>
+        <button type="button" class="clearDoneButton roundBorder" onclick="clearDoneTasks()" title="Limpiar">✨</button>
+      </form>
+      <div id="tasksContainer"></div>
+    </div>
+  </main>
 </body>
 
 </html>

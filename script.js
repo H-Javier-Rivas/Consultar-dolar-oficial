@@ -1,3 +1,15 @@
+const precioRefTxt = document.getElementById('precio-ref');
+const cambioDolarTxt = document.getElementById('cambio-dolar');
+
+const precioBsTxt = document.getElementById('precio-bs');
+const precioDolarTxt = document.getElementById('precio-dolar');
+
+const bolivares = document.getElementById('bolivares');
+const dolares = document.getElementById('dolares');
+
+const precioBsChk = document.getElementById('precio-bs-chk');
+const precioDolarChk = document.getElementById('precio-dolar-chk');
+
 // Función para obtener la tasa de cambio
 async function getExchangeRate() {
     try {
@@ -8,6 +20,7 @@ async function getExchangeRate() {
     } catch (error) {
         console.error('Error al obtener la tasa de cambio:', error);
         return null;
+        //return tasa = 81.00;
     }
 }
 
@@ -15,65 +28,136 @@ async function getExchangeRate() {
 async function updateExchangeRate() {
     const exchangeRate = await getExchangeRate();
     if (exchangeRate) {
-        document.getElementById('cambio-dolar').textContent = exchangeRate;
-
+        cambioDolarTxt.textContent = exchangeRate;
     } else {
-        document.getElementById('cambio-dolar').textContent = 'Error al obtener la tasa';
+        cambioDolarTxt.textContent = 'Error al obtener la tasa';
     }
 }
 
 updateExchangeRate();  // Actualizar la tasa de cambio al cargar la página
 
-document.getElementById('amount').addEventListener('input', function () {
-    let amount = parseFloat(document.getElementById('amount').value);
-    if (isNaN(amount)) {
-        // alert('Por favor, ingresa un monto válido.');
-        amount = 0.00;
-        return;
+precioRefTxt.addEventListener('input', function () {
+    const precioRef = parseFloat(precioRefTxt.value);
+    const currentExchangeRate = parseFloat(cambioDolarTxt.textContent);
+    if (!isNaN(precioRef) && currentExchangeRate) {
+        const precioBs = precioDolarChk.checked ? precioRef * currentExchangeRate : precioRef;
+        precioBsTxt.innerText = `${precioBs.toFixed(2)}`;
     }
-    document.getElementById('result').innerText = `${amount.toFixed(2)}`;
 });
 
-document.getElementById('convert').addEventListener('click', async function () {
-    const amount = parseFloat(document.getElementById('amount').value);
-    if (isNaN(amount)) {
-        alert('Por favor, ingresa un monto válido.');
-        return;
+precioBsChk.addEventListener('input', function () {
+    const precioBs = parseFloat(precioRefTxt.value);
+    if (precioBsChk.checked) {
+        precioBsTxt.innerText = `${precioBs.toFixed(2)}`;
     }
+});   
 
-    const tasa = parseFloat(document.getElementById('cambio-dolar').textContent);
-    if (tasa) {
-        const result = amount * tasa;
-        document.getElementById('result').innerText = `${result.toFixed(2)}`;
-    } else {
-        document.getElementById('result').innerText = 'Error al obtener la tasa de cambio';
+precioDolarChk.addEventListener('input', function () {
+    const precioRef = parseFloat(precioRefTxt.value);
+    const currentExchangeRate = parseFloat(cambioDolarTxt.textContent);
+    const precioBs = precioRef * currentExchangeRate;
+    if (precioDolarChk.checked) {
+        precioBsTxt.innerText = `${precioBs.toFixed(2)}`;
     }
 });
 
 document.getElementById('sumar').addEventListener('click', function () {
-    let bolivaresAcum = parseFloat(document.getElementById('bolivares').textContent);
-    let resultadoNum = parseFloat(document.getElementById('result').textContent);
-    let tasa = parseFloat(document.getElementById('cambio-dolar').textContent);
+    let bolivaresAcum = parseFloat(bolivares.textContent);
+    let resultadoNum = parseFloat(precioBsTxt.textContent);
+    let tasa = parseFloat(cambioDolarTxt.textContent);
 
     if (isNaN(bolivaresAcum)) bolivaresAcum = 0.00;
 
     bolivaresAcum += resultadoNum;
-    document.getElementById('bolivares').innerText = `${bolivaresAcum.toFixed(2)}`;
+    bolivares.innerText = `${bolivaresAcum.toFixed(2)}`;
 
     let montoEnDolares = bolivaresAcum / tasa;
-    document.getElementById('dolares').innerText = `${montoEnDolares.toFixed(2)}`;
+    dolares.innerText = `${montoEnDolares.toFixed(2)}`;
+
+    precioRefTxt.value = '';
+    precioBsTxt.innerText = '0.00';
 });
 
 document.getElementById('restar').addEventListener('click', function () {
-    let bolivaresAcum = parseFloat(document.getElementById('bolivares').textContent);
-    let resultadoNum = parseFloat(document.getElementById('result').textContent);
-    let tasa = parseFloat(document.getElementById('cambio-dolar').textContent);
+    let bolivaresAcum = parseFloat(bolivares.textContent);
+    let resultadoNum = parseFloat(precioBsTxt.textContent);
+    let tasa = parseFloat(cambioDolarTxt.textContent);
 
     if (isNaN(bolivaresAcum)) bolivaresAcum = 0.00;
 
     bolivaresAcum -= resultadoNum;
-    document.getElementById('bolivares').innerText = `${bolivaresAcum.toFixed(2)}`;
+    bolivares.innerText = `${bolivaresAcum.toFixed(2)}`;
 
     let montoEnDolares = bolivaresAcum / tasa;
-    document.getElementById('dolares').innerText = `${montoEnDolares.toFixed(2)}`;
+    dolares.innerText = `${montoEnDolares.toFixed(2)}`;
 });
+
+document.getElementById('bye-bye').addEventListener('click', function () {
+    // Reset accumulated values
+    bolivares.innerText = `${'0.00'}`;
+    dolares.innerText = `${'0.00'}`;
+
+    // Reset input fields
+    precioRefTxt.value = '';
+    precioBsTxt.innerText = '0.00';
+    precioDolarTxt.innerText = '0.00';
+
+    // Uncheck checkboxes
+    precioBsChk.checked = false;
+    precioDolarChk.checked = false;
+});
+
+// -------------------------- TODO LIST --------------------------
+
+// Info date
+const dateNumber = document.getElementById('dateNumber');
+const dateText = document.getElementById('dateText');
+const dateMonth = document.getElementById('dateMonth');
+const dateYear = document.getElementById('dateYear');
+
+// Tasks container
+const tasksContainer = document.getElementById('tasksContainer');
+
+const setDate = () => {
+	const date = new Date();
+	dateNumber.textContent = date.toLocaleString('es', { day: 'numeric' });
+	dateText.textContent =   date.toLocaleString('es', { weekday: 'long' });
+	dateMonth.textContent =  date.toLocaleString('es', { month: 'short' });
+	dateYear.textContent =   date.toLocaleString('es', { year: 'numeric' });
+};
+
+const addNewTask = (event) => {
+	event.preventDefault();
+	const { value } = event.target.taskText;
+	if (!value) return;
+	const task = document.createElement('div');
+	task.classList.add('task', 'roundBorder');
+	task.addEventListener('click', changeTaskState);
+	task.textContent = value;
+	tasksContainer.prepend(task);
+	event.target.reset();
+}
+
+const changeTaskState = event => {
+	event.target.classList.toggle('done');
+}
+
+const order = () => {
+	const done = [];
+	const toDo = [];
+	tasksContainer.childNodes.forEach( el => {
+		el.classList.contains('done') ? done.push(el) : toDo.push(el)		
+	});
+	return [...toDo, ...done];
+}
+
+const renderOrderedTasks = () => {
+	order().forEach(el => tasksContainer.appendChild(el))
+}	
+
+const clearDoneTasks = () => {
+	const doneTasks = tasksContainer.querySelectorAll('.done');
+	doneTasks.forEach(task => task.remove());
+};
+
+setDate();
