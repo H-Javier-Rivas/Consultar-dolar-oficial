@@ -32,7 +32,9 @@
 
   <main class="container">
     <h1>Calculadora de Mercado</h1> 
-    <p><b>Tasa BCV de hoy: <span id="cambio-dolar"></span></b></p>    
+    <p>
+      <span>Tasa BCV de hoy: Bs. <b id="cambio-dolar"></b></span>
+    </p>    
 
     <!-- <h1>Calculadora de Tasa de Cambio</h1> -->
     <div class="converter">
@@ -69,7 +71,7 @@
       <h1>Compras pendientes</h1>
       <form onsubmit="addNewTask(event)">
         <input type="text" name="taskText" autocomplete="off" placeholder="Nuevo item" class="roundBorder"></input>
-        <button type="submit" class="addTaskButton" title="Anotar">📝</button>
+        <button type="submit" class="addTaskButton" title="Anotar">✍</button>
         <button type="button" class="orderButton roundBorder" onclick="renderOrderedTasks()" title="¿Qué falta?">👀</button>
         <button type="button" class="clearDoneButton roundBorder" onclick="clearDoneTasks()" title="Limpiar">✨</button>
       </form>

@@ -30,14 +30,26 @@ async function updateExchangeRate() {
     if (exchangeRate) {
         cambioDolarTxt.textContent = exchangeRate;
     } else {
-        cambioDolarTxt.textContent = 'Error al obtener la tasa';
+        cambioDolarTxt.textContent = '⚠';
+        const userRate = prompt("No se pudo obtener la tasa de cambio. Por favor, ingrese la tasa manualmente:");
+        if (userRate && !isNaN(userRate)) {
+            cambioDolarTxt.textContent = parseFloat(userRate).toFixed(4);
+        } else {
+            alert("Tasa inválida. Por favor, recargue la página e intente nuevamente.");
+        }
     }
 }
 
 updateExchangeRate();  // Actualizar la tasa de cambio al cargar la página
 
 precioRefTxt.addEventListener('input', function () {
-    const precioRef = parseFloat(precioRefTxt.value);
+    let precioRef = parseFloat(precioRefTxt.value);
+    if (precioRef < 0) {
+        alert("No se permiten valores negativos.");
+        precioRefTxt.value = '';
+        precioBsTxt.innerText = '0.00';
+        return;
+    }
     const currentExchangeRate = parseFloat(cambioDolarTxt.textContent);
     if (!isNaN(precioRef) && currentExchangeRate) {
         const precioBs = precioDolarChk.checked ? precioRef * currentExchangeRate : precioRef;
@@ -85,11 +97,15 @@ document.getElementById('restar').addEventListener('click', function () {
 
     if (isNaN(bolivaresAcum)) bolivaresAcum = 0.00;
 
-    bolivaresAcum -= resultadoNum;
-    bolivares.innerText = `${bolivaresAcum.toFixed(2)}`;
+    if (resultadoNum <= bolivaresAcum) {
+        bolivaresAcum -= resultadoNum;
+        bolivares.innerText = `${bolivaresAcum.toFixed(2)}`;
 
-    let montoEnDolares = bolivaresAcum / tasa;
-    dolares.innerText = `${montoEnDolares.toFixed(2)}`;
+        let montoEnDolares = bolivaresAcum / tasa;
+        dolares.innerText = `${montoEnDolares.toFixed(2)}`;
+    } else {
+        alert("No se puede restar un monto mayor al acumulado.");
+    }
 });
 
 document.getElementById('bye-bye').addEventListener('click', function () {

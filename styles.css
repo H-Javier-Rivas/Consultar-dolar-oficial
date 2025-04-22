@@ -183,7 +183,7 @@ input:focus {
 }
 
 /* Responsive Design */
-@media (max-width: 600px) {
+@media (max-width: 400px) {
     .container {
         padding: 1rem;
     }
@@ -200,7 +200,11 @@ input:focus {
         font-size: 0.875rem;
     }
 
-    #result {
-        font-size: 1.25rem;
+    form {
+        flex-wrap: wrap;
+    }
+
+    form > input {
+        order: 10;
     }
 }
