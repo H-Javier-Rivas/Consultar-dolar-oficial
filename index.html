@@ -32,9 +32,20 @@
 
   <main class="container">
     <h1>Calculadora de Mercado</h1> 
-    <p>
-      <span>Tasa BCV de hoy: Bs. <b id="cambio-dolar"></b></span>
-    </p>    
+<div class="exchange-rate-container">
+  <p class="rate-label">Tasa de cambio:</p>
+  <div class="rate-display">
+    <span id="rate-mode-indicator" class="mode-indicator">Modo BCV</span>
+    <p class="rate-value">
+      <span id="cambio-dolar"></span>
+      <span id="rate-currency">Bs.</span>
+    </p>
+  </div>
+  <div class="rate-controls">
+    <input type="number" id="tasa-manual" placeholder="Tasa manual" step="0.01" class="roundBorder">
+    <button id="toggle-rate-mode" class="roundBorder" title="Cambiar entre tasa BCV o manual">⚙️</button>
+  </div>
+</div>   
 
     <!-- <h1>Calculadora de Tasa de Cambio</h1> -->
     <div class="converter">
