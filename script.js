@@ -10,100 +10,35 @@ const dolares = document.getElementById('dolares');
 const precioBsChk = document.getElementById('precio-bs-chk');
 const precioDolarChk = document.getElementById('precio-dolar-chk');
 
-// ==================== TASA DE CAMBIO ====================
-
-const cambioDolarTxt = document.getElementById('cambio-dolar');
-const tasaManualInput = document.getElementById('tasa-manual');
-const toggleRateModeBtn = document.getElementById('toggle-rate-mode');
-const rateModeIndicator = document.getElementById('rate-mode-indicator');
-
-let isManualMode = localStorage.getItem('isManualMode') === 'true';
-let manualRate = parseFloat(localStorage.getItem('manualRate')) || 0;
-
-// Función para obtener la tasa de cambio (API BCV)
-async function getExchangeRateFromAPI() {
+// Función para obtener la tasa de cambio
+async function getExchangeRate() {
     try {
         const response = await fetch("https://ve.dolarapi.com/v1/dolares/oficial");
         const data = await response.json();
-        return data.promedio.toFixed(4);
+        const tasa = data.promedio.toFixed(4);
+        return tasa;
     } catch (error) {
         console.error('Error al obtener la tasa de cambio:', error);
         return null;
+        //return tasa = 81.00;
     }
 }
 
-// Función para actualizar la tasa en el DOM
+// Función para actualizar la tasa de cambio
 async function updateExchangeRate() {
-    let rateToDisplay = '';
-    
-    if (isManualMode && manualRate > 0) {
-        // Usar tasa manual
-        rateToDisplay = manualRate.toFixed(4);
-        cambioDolarTxt.textContent = rateToDisplay;
-        tasaManualInput.value = manualRate;
-        rateModeIndicator.textContent = 'Modo Manual';
-        rateModeIndicator.classList.add('manual');
-        tasaManualInput.classList.add('active');
+    const exchangeRate = await getExchangeRate();
+    if (exchangeRate) {
+        cambioDolarTxt.textContent = exchangeRate;
     } else {
-        // Obtener tasa BCV
-        const exchangeRate = await getExchangeRateFromAPI();
-        if (exchangeRate) {
-            rateToDisplay = exchangeRate;
-            cambioDolarTxt.textContent = rateToDisplay;
-            rateModeIndicator.textContent = 'Modo BCV';
-            rateModeIndicator.classList.remove('manual');
-            tasaManualInput.classList.remove('active');
+        cambioDolarTxt.textContent = '⚠';
+        const userRate = prompt("No se pudo obtener la tasa de cambio. Por favor, ingrese la tasa manualmente:");
+        if (userRate && !isNaN(userRate)) {
+            cambioDolarTxt.textContent = parseFloat(userRate).toFixed(4);
         } else {
-            // Fallback si la API falla
-            cambioDolarTxt.textContent = '⚠';
-            rateModeIndicator.textContent = 'Error API';
-            alert("No se pudo obtener la tasa BCV. Active el modo manual para ingresar una tasa.");
+            alert("Tasa inválida. Por favor, recargue la página e intente nuevamente.");
         }
-    }
-    
-    // Guardar preferencia
-    localStorage.setItem('isManualMode', isManualMode);
-    if (isManualMode) {
-        localStorage.setItem('manualRate', manualRate);
     }
 }
-
-// Inicializar tasa al cargar
-updateExchangeRate();
-
-// Actualizar tasa cada 5 minutos (solo en modo automático)
-setInterval(() => {
-    if (!isManualMode) {
-        updateExchangeRate();
-    }
-}, 300000);
-
-// Toggle entre modos
-toggleRateModeBtn.addEventListener('click', () => {
-    isManualMode = !isManualMode;
-    if (isManualMode) {
-        const currentRate = parseFloat(cambioDolarTxt.textContent);
-        if (currentRate && !isNaN(currentRate)) {
-            tasaManualInput.value = currentRate;
-            manualRate = currentRate;
-        }
-    }
-    updateExchangeRate();
-});
-
-// Guardar tasa manual cuando el usuario la edita
-tasaManualInput.addEventListener('input', () => {
-    const newRate = parseFloat(tasaManualInput.value);
-    if (!isNaN(newRate) && newRate > 0) {
-        manualRate = newRate;
-        if (isManualMode) {
-            cambioDolarTxt.textContent = manualRate.toFixed(4);
-            localStorage.setItem('manualRate', manualRate);
-        }
-    }
-});
-
-// ==================== CALCULADORA ====================
 
 updateExchangeRate();  // Actualizar la tasa de cambio al cargar la página
 
