@@ -1,179 +1,191 @@
 const precioRefTxt = document.getElementById('precio-ref');
 const cambioDolarTxt = document.getElementById('cambio-dolar');
-
 const precioBsTxt = document.getElementById('precio-bs');
-const precioDolarTxt = document.getElementById('precio-dolar');
-
-const bolivares = document.getElementById('bolivares');
-const dolares = document.getElementById('dolares');
-
+const bolivaresTotal = document.getElementById('bolivares');
+const dolaresTotal = document.getElementById('dolares');
 const precioBsChk = document.getElementById('precio-bs-chk');
 const precioDolarChk = document.getElementById('precio-dolar-chk');
+const tasksContainer = document.getElementById('tasksContainer');
 
-// Función para obtener la tasa de cambio
+// --- TASA DE CAMBIO ---
 async function getExchangeRate() {
     try {
         const response = await fetch("https://ve.dolarapi.com/v1/dolares/oficial");
         const data = await response.json();
-        const tasa = data.promedio.toFixed(4);
-        return tasa;
+        return data.promedio.toFixed(4);
     } catch (error) {
-        console.error('Error al obtener la tasa de cambio:', error);
+        console.error('Error al obtener la tasa:', error);
         return null;
-        //return tasa = 81.00;
     }
 }
 
-// Función para actualizar la tasa de cambio
 async function updateExchangeRate() {
     const exchangeRate = await getExchangeRate();
     if (exchangeRate) {
         cambioDolarTxt.textContent = exchangeRate;
+        updateCalculations();
     } else {
         cambioDolarTxt.textContent = '⚠';
-        const userRate = prompt("No se pudo obtener la tasa de cambio. Por favor, ingrese la tasa manualmente:");
+        const userRate = prompt("No se pudo obtener la tasa. Ingresa el valor manualmente (Ej: 36.50):");
         if (userRate && !isNaN(userRate)) {
             cambioDolarTxt.textContent = parseFloat(userRate).toFixed(4);
-        } else {
-            alert("Tasa inválida. Por favor, recargue la página e intente nuevamente.");
+            updateCalculations();
         }
     }
 }
 
-updateExchangeRate();  // Actualizar la tasa de cambio al cargar la página
-
-precioRefTxt.addEventListener('input', function () {
-    let precioRef = parseFloat(precioRefTxt.value);
+// --- LÓGICA DE CÁLCULO ---
+function updateCalculations() {
+    let precioRef = parseFloat(precioRefTxt.value) || 0;
+    const currentExchangeRate = parseFloat(cambioDolarTxt.textContent) || 0;
+    
     if (precioRef < 0) {
         alert("No se permiten valores negativos.");
         precioRefTxt.value = '';
-        precioBsTxt.innerText = '0.00';
+        precioRef = 0;
+    }
+
+    const subtotal = precioDolarChk.checked ? precioRef * currentExchangeRate : precioRef;
+    precioBsTxt.innerText = subtotal.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+precioRefTxt.addEventListener('input', updateCalculations);
+precioBsChk.addEventListener('change', updateCalculations);
+precioDolarChk.addEventListener('change', updateCalculations);
+
+document.getElementById('sumar').addEventListener('click', () => {
+    modifyTotal(1);
+});
+
+document.getElementById('restar').addEventListener('click', () => {
+    modifyTotal(-1);
+});
+
+function modifyTotal(multiplier) {
+    let currentTotal = parseFloat(bolivaresTotal.textContent.replace(/\./g, '').replace(',', '.')) || 0;
+    let subtotalText = precioBsTxt.textContent.replace(/\./g, '').replace(',', '.');
+    let subtotal = parseFloat(subtotalText) || 0;
+    let tasa = parseFloat(cambioDolarTxt.textContent) || 1;
+
+    let newTotal = currentTotal + (subtotal * multiplier);
+    
+    if (newTotal < 0) {
+        alert("El total no puede ser negativo.");
         return;
     }
-    const currentExchangeRate = parseFloat(cambioDolarTxt.textContent);
-    if (!isNaN(precioRef) && currentExchangeRate) {
-        const precioBs = precioDolarChk.checked ? precioRef * currentExchangeRate : precioRef;
-        precioBsTxt.innerText = `${precioBs.toFixed(2)}`;
-    }
-});
 
-precioBsChk.addEventListener('input', function () {
-    const precioBs = parseFloat(precioRefTxt.value);
-    if (precioBsChk.checked) {
-        precioBsTxt.innerText = `${precioBs.toFixed(2)}`;
-    }
-});   
-
-precioDolarChk.addEventListener('input', function () {
-    const precioRef = parseFloat(precioRefTxt.value);
-    const currentExchangeRate = parseFloat(cambioDolarTxt.textContent);
-    const precioBs = precioRef * currentExchangeRate;
-    if (precioDolarChk.checked) {
-        precioBsTxt.innerText = `${precioBs.toFixed(2)}`;
-    }
-});
-
-document.getElementById('sumar').addEventListener('click', function () {
-    let bolivaresAcum = parseFloat(bolivares.textContent);
-    let resultadoNum = parseFloat(precioBsTxt.textContent);
-    let tasa = parseFloat(cambioDolarTxt.textContent);
-
-    if (isNaN(bolivaresAcum)) bolivaresAcum = 0.00;
-
-    bolivaresAcum += resultadoNum;
-    bolivares.innerText = `${bolivaresAcum.toFixed(2)}`;
-
-    let montoEnDolares = bolivaresAcum / tasa;
-    dolares.innerText = `${montoEnDolares.toFixed(2)}`;
+    bolivaresTotal.innerText = newTotal.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    dolaresTotal.innerText = (newTotal / tasa).toFixed(2);
 
     precioRefTxt.value = '';
-    precioBsTxt.innerText = '0.00';
-});
+    precioBsTxt.innerText = '0,00';
+    
+    // Guardar estado en localStorage (opcional para el total)
+    saveAppState();
+}
 
-document.getElementById('restar').addEventListener('click', function () {
-    let bolivaresAcum = parseFloat(bolivares.textContent);
-    let resultadoNum = parseFloat(precioBsTxt.textContent);
-    let tasa = parseFloat(cambioDolarTxt.textContent);
-
-    if (isNaN(bolivaresAcum)) bolivaresAcum = 0.00;
-
-    if (resultadoNum <= bolivaresAcum) {
-        bolivaresAcum -= resultadoNum;
-        bolivares.innerText = `${bolivaresAcum.toFixed(2)}`;
-
-        let montoEnDolares = bolivaresAcum / tasa;
-        dolares.innerText = `${montoEnDolares.toFixed(2)}`;
-    } else {
-        alert("No se puede restar un monto mayor al acumulado.");
+document.getElementById('bye-bye').addEventListener('click', () => {
+    if (confirm("¿Seguro que quieres limpiar todo?")) {
+        bolivaresTotal.innerText = '0,00';
+        dolaresTotal.innerText = '0.00';
+        precioRefTxt.value = '';
+        precioBsTxt.innerText = '0,00';
+        saveAppState();
     }
 });
 
-document.getElementById('bye-bye').addEventListener('click', function () {
-    // Reset accumulated values
-    bolivares.innerText = `${'0.00'}`;
-    dolares.innerText = `${'0.00'}`;
+// --- TODO LIST CON PERSISTENCIA ---
+const saveTasks = () => {
+    const tasks = [];
+    tasksContainer.querySelectorAll('.task').forEach(el => {
+        tasks.push({
+            text: el.querySelector('.task-text').textContent,
+            done: el.classList.contains('done')
+        });
+    });
+    localStorage.setItem('dolarOficialTasks', JSON.stringify(tasks));
+}
 
-    // Reset input fields
-    precioRefTxt.value = '';
-    precioBsTxt.innerText = '0.00';
-    precioDolarTxt.innerText = '0.00';
+const loadTasks = () => {
+    const saved = localStorage.getItem('dolarOficialTasks');
+    if (saved) {
+        const tasks = JSON.parse(saved);
+        tasks.forEach(t => renderTask(t.text, t.done));
+    }
+}
 
-    // Uncheck checkboxes
-    precioBsChk.checked = false;
-    precioDolarChk.checked = false;
-});
-
-// -------------------------- TODO LIST --------------------------
-
-// Info date
-const dateNumber = document.getElementById('dateNumber');
-const dateText = document.getElementById('dateText');
-const dateMonth = document.getElementById('dateMonth');
-const dateYear = document.getElementById('dateYear');
-
-// Tasks container
-const tasksContainer = document.getElementById('tasksContainer');
-
-const setDate = () => {
-	const date = new Date();
-	dateNumber.textContent = date.toLocaleString('es', { day: 'numeric' });
-	dateText.textContent =   date.toLocaleString('es', { weekday: 'long' });
-	dateMonth.textContent =  date.toLocaleString('es', { month: 'short' });
-	dateYear.textContent =   date.toLocaleString('es', { year: 'numeric' });
-};
+const renderTask = (text, done = false) => {
+    const task = document.createElement('div');
+    task.classList.add('task');
+    if (done) task.classList.add('done');
+    
+    task.innerHTML = `
+        <span class="task-text">${text}</span>
+        <span class="task-status">${done ? '✅' : '⏳'}</span>
+    `;
+    
+    task.addEventListener('click', () => {
+        task.classList.toggle('done');
+        task.querySelector('.task-status').textContent = task.classList.contains('done') ? '✅' : '⏳';
+        saveTasks();
+    });
+    
+    tasksContainer.prepend(task);
+}
 
 const addNewTask = (event) => {
-	event.preventDefault();
-	const { value } = event.target.taskText;
-	if (!value) return;
-	const task = document.createElement('div');
-	task.classList.add('task', 'roundBorder');
-	task.addEventListener('click', changeTaskState);
-	task.textContent = value;
-	tasksContainer.prepend(task);
-	event.target.reset();
+    event.preventDefault();
+    const input = event.target.taskText;
+    if (!input.value.trim()) return;
+    
+    renderTask(input.value);
+    input.value = '';
+    saveTasks();
 }
-
-const changeTaskState = event => {
-	event.target.classList.toggle('done');
-}
-
-const order = () => {
-	const done = [];
-	const toDo = [];
-	tasksContainer.childNodes.forEach( el => {
-		el.classList.contains('done') ? done.push(el) : toDo.push(el)		
-	});
-	return [...toDo, ...done];
-}
-
-const renderOrderedTasks = () => {
-	order().forEach(el => tasksContainer.appendChild(el))
-}	
 
 const clearDoneTasks = () => {
-	const doneTasks = tasksContainer.querySelectorAll('.done');
-	doneTasks.forEach(task => task.remove());
+    const doneTasks = tasksContainer.querySelectorAll('.done');
+    doneTasks.forEach(task => task.remove());
+    saveTasks();
 };
 
-setDate();
+const renderOrderedTasks = () => {
+    const tasks = Array.from(tasksContainer.childNodes);
+    tasks.sort((a, b) => a.classList.contains('done') - b.classList.contains('done'));
+    tasks.forEach(el => tasksContainer.appendChild(el));
+};
+
+// --- DATA PERSISTENCE (TOTALS) ---
+function saveAppState() {
+    const state = {
+        bolivares: bolivaresTotal.innerText,
+        dolares: dolaresTotal.innerText
+    };
+    localStorage.setItem('dolarOficialState', JSON.stringify(state));
+}
+
+function loadAppState() {
+    const saved = localStorage.getItem('dolarOficialState');
+    if (saved) {
+        const state = JSON.parse(saved);
+        bolivaresTotal.innerText = state.bolivares;
+        dolaresTotal.innerText = state.dolares;
+    }
+}
+
+// --- FECHA ---
+const setDate = () => {
+    const date = new Date();
+    document.getElementById('dateNumber').textContent = date.toLocaleString('es', { day: 'numeric' });
+    document.getElementById('dateText').textContent = date.toLocaleString('es', { weekday: 'long' });
+    document.getElementById('dateMonth').textContent = date.toLocaleString('es', { month: 'short' });
+    document.getElementById('dateYear').textContent = date.toLocaleString('es', { year: 'numeric' });
+};
+
+// --- INIT ---
+document.addEventListener('DOMContentLoaded', () => {
+    setDate();
+    updateExchangeRate();
+    loadTasks();
+    loadAppState();
+});
