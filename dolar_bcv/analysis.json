@@ -1,0 +1,20 @@
+
+warning - The value of the local variable 'baseUrl' isn't used - lib\data\services\exchange_rate_service.dart:11:11 - unused_local_variable
+   info - Parameter 'key' could be a super parameter - lib\main.dart:41:9 - use_super_parameters
+   info - Parameter 'key' could be a super parameter - lib\ui\screens\history_screen.dart:9:9 - use_super_parameters
+   info - Don't use 'BuildContext's across async gaps - lib\ui\screens\history_screen.dart:21:7 - use_build_context_synchronously
+   info - String literals shouldn't be concatenated by the '+' operator - lib\ui\screens\history_screen.dart:109:47 - prefer_adjacent_string_concatenation
+  error - The operator '-' isn't defined for the type 'String' - lib\ui\screens\history_screen.dart:109:53 - undefined_operator
+warning - Unused import: '../theme/app_theme.dart' - lib\ui\screens\home_screen.dart:3:8 - unused_import
+   info - Parameter 'key' could be a super parameter - lib\ui\screens\home_screen.dart:12:9 - use_super_parameters
+   info - Parameter 'key' could be a super parameter - lib\ui\theme\app_theme.dart:32:9 - use_super_parameters
+   info - Parameter 'key' could be a super parameter - lib\ui\widgets\converter_panel_widget.dart:8:9 - use_super_parameters
+   info - 'groupValue' is deprecated and shouldn't be used. Use a RadioGroup ancestor to manage group value instead. This feature was deprecated after v3.32.0-0.0.pre - lib\ui\widgets\converter_panel_widget.dart:123:13 - deprecated_member_use
+   info - 'onChanged' is deprecated and shouldn't be used. Use RadioGroup to handle value change instead. This feature was deprecated after v3.32.0-0.0.pre - lib\ui\widgets\converter_panel_widget.dart:124:13 - deprecated_member_use
+   info - Parameter 'key' could be a super parameter - lib\ui\widgets\date_header_widget.dart:7:9 - use_super_parameters
+   info - Parameter 'key' could be a super parameter - lib\ui\widgets\rate_card_widget.dart:8:9 - use_super_parameters
+  error - Illegal assignment to non-assignable expression - lib\ui\widgets\rate_card_widget.dart:49:83 - illegal_assignment_to_non_assignable
+   info - Parameter 'key' could be a super parameter - lib\ui\widgets\todo_section_widget.dart:8:9 - use_super_parameters
+   info - Parameter 'key' could be a super parameter - lib\ui\widgets\totals_panel_widget.dart:8:9 - use_super_parameters
+  error - The name 'MyApp' isn't a class - test\widget_test.dart:16:35 - creation_with_non_type
+
