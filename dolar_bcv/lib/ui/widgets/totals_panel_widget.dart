@@ -5,7 +5,7 @@ import '../../viewmodels/converter_viewmodel.dart';
 import '../theme/app_theme.dart';
 
 class TotalsPanelWidget extends StatelessWidget {
-  const TotalsPanelWidget({Key? key}) : super(key: key);
+  const TotalsPanelWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class TotalsPanelWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Divider(color: AppTheme.glassBorder, height: 48),
+        Divider(color: AppTheme.getGlassBorder(context), height: 48),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -24,11 +24,11 @@ class TotalsPanelWidget extends StatelessWidget {
               style: TextStyle(
                 fontSize: 24.sp,
                 fontWeight: FontWeight.w700,
-                color: Colors.white,
+                color: AppTheme.getTextMain(context),
               ),
             ),
             Text(
-              '\$ \${viewModel.totalUsd.toStringAsFixed(2)}',
+              '\$ ${viewModel.totalUsd.toStringAsFixed(2)}',
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w600,
@@ -51,9 +51,9 @@ class TotalsPanelWidget extends StatelessWidget {
           height: 56.h,
           child: ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0x1AEF4444), // rgba(239, 68, 68, 0.1)
+              backgroundColor: AppTheme.error.withAlpha(26), // rgba(239, 68, 68, 0.1)
               foregroundColor: AppTheme.error,
-              side: const BorderSide(color: Color(0x33EF4444)), // rgba(239, 68, 68, 0.2)
+              side: BorderSide(color: AppTheme.error.withAlpha(51)), // rgba(239, 68, 68, 0.2)
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
             ),
             icon: const Text('💸', style: TextStyle(fontSize: 20)),
@@ -65,9 +65,9 @@ class TotalsPanelWidget extends StatelessWidget {
               final confirm = await showDialog<bool>(
                 context: context,
                 builder: (ctx) => AlertDialog(
-                  backgroundColor: AppTheme.bgCard,
-                  title: const Text('Confirmar', style: TextStyle(color: Colors.white)),
-                  content: const Text('¿Seguro que quieres limpiar todo?', style: TextStyle(color: AppTheme.textMuted)),
+                  backgroundColor: AppTheme.getBgCard(context),
+                  title: Text('Confirmar', style: TextStyle(color: AppTheme.getTextMain(context))),
+                  content: Text('¿Seguro que quieres limpiar todo?', style: TextStyle(color: AppTheme.getTextMuted(context))),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(ctx, false),

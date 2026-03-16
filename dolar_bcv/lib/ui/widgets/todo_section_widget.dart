@@ -5,7 +5,7 @@ import '../../viewmodels/todo_viewmodel.dart';
 import '../theme/app_theme.dart';
 
 class TodoSectionWidget extends StatefulWidget {
-  const TodoSectionWidget({Key? key}) : super(key: key);
+  const TodoSectionWidget({super.key});
 
   @override
   State<TodoSectionWidget> createState() => _TodoSectionWidgetState();
@@ -32,6 +32,7 @@ class _TodoSectionWidgetState extends State<TodoSectionWidget> {
           style: TextStyle(
             fontSize: 20.sp,
             fontWeight: FontWeight.w700,
+            color: AppTheme.getTextMain(context),
           ),
         ),
         SizedBox(height: 16.h),
@@ -44,16 +45,16 @@ class _TodoSectionWidgetState extends State<TodoSectionWidget> {
                 height: 48.h,
                 child: TextField(
                   controller: _controller,
-                  style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                  style: TextStyle(color: AppTheme.getTextMain(context), fontSize: 16.sp),
                   decoration: InputDecoration(
                     hintText: '¿Qué vamos a comprar?',
-                    hintStyle: TextStyle(color: AppTheme.textMuted, fontSize: 14.sp),
+                    hintStyle: TextStyle(color: AppTheme.getTextMuted(context), fontSize: 14.sp),
                     filled: true,
-                    fillColor: const Color(0x0DFFFFFF),
+                    fillColor: AppTheme.isDark(context) ? Colors.white.withAlpha(13) : Colors.black.withAlpha(13),
                     contentPadding: EdgeInsets.symmetric(horizontal: 16.w),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.r),
-                      borderSide: const BorderSide(color: AppTheme.glassBorder),
+                      borderSide: BorderSide(color: AppTheme.getGlassBorder(context)),
                     ),
                   ),
                   onSubmitted: (_) => _submitTask(viewModel),
@@ -69,13 +70,13 @@ class _TodoSectionWidgetState extends State<TodoSectionWidget> {
             SizedBox(width: 8.w),
             _ActionButtonMini(
               text: '👀',
-              color: const Color(0x0DFFFFFF),
+              color: AppTheme.isDark(context) ? Colors.white.withAlpha(13) : Colors.black.withAlpha(13),
               onTap: () => viewModel.sort(),
             ),
             SizedBox(width: 8.w),
             _ActionButtonMini(
               text: '✨',
-              color: const Color(0x0DFFFFFF),
+              color: AppTheme.isDark(context) ? Colors.white.withAlpha(13) : Colors.black.withAlpha(13),
               onTap: () => viewModel.deleteDone(),
             ),
           ],
@@ -102,8 +103,10 @@ class _TodoSectionWidgetState extends State<TodoSectionWidget> {
                     child: Container(
                       padding: EdgeInsets.all(16.w),
                       decoration: BoxDecoration(
-                        color: todo.isDone ? Colors.transparent : const Color(0x08FFFFFF),
-                        border: Border.all(color: AppTheme.glassBorder),
+                        color: todo.isDone 
+                            ? Colors.transparent 
+                            : (AppTheme.isDark(context) ? Colors.white.withAlpha(8) : Colors.black.withAlpha(8)),
+                        border: Border.all(color: AppTheme.getGlassBorder(context)),
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Row(
@@ -114,7 +117,7 @@ class _TodoSectionWidgetState extends State<TodoSectionWidget> {
                               todo.text,
                               style: TextStyle(
                                 fontSize: 16.sp,
-                                color: todo.isDone ? AppTheme.textMuted : Colors.white,
+                                color: todo.isDone ? AppTheme.getTextMuted(context) : AppTheme.getTextMain(context),
                                 decoration: todo.isDone ? TextDecoration.lineThrough : null,
                               ),
                             ),
@@ -148,6 +151,7 @@ class _ActionButtonMini extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
+          foregroundColor: AppTheme.getTextMain(context),
           padding: EdgeInsets.zero,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
         ),

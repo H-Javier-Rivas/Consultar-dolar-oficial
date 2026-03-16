@@ -5,7 +5,7 @@ import '../../viewmodels/converter_viewmodel.dart';
 import '../theme/app_theme.dart';
 
 class RateCardWidget extends StatelessWidget {
-  const RateCardWidget({Key? key}) : super(key: key);
+  const RateCardWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +16,8 @@ class RateCardWidget extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 32.h),
       padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 24.w),
       decoration: BoxDecoration(
-        color: const Color(0x1A10B981), // rgba(16, 185, 129, 0.1)
-        border: Border.all(color: const Color(0x3310B981)), // rgba(16, 185, 129, 0.2)
+        color: AppTheme.primary.withAlpha(26), // rgba(16, 185, 129, 0.1)
+        border: Border.all(color: AppTheme.primary.withAlpha(51)), // rgba(16, 185, 129, 0.2)
         borderRadius: BorderRadius.circular(16.r),
       ),
       child: Column(
@@ -29,7 +29,7 @@ class RateCardWidget extends StatelessWidget {
                 'Tasa Oficial BCV',
                 style: TextStyle(
                   fontSize: 14.sp,
-                  color: AppTheme.textMuted,
+                  color: AppTheme.getTextMuted(context),
                 ),
               ),
               if (viewModel.isOffline) ...[
@@ -46,7 +46,7 @@ class RateCardWidget extends StatelessWidget {
                   child: const CircularProgressIndicator(color: AppTheme.primary),
                 )
               : Text(
-                  "Bs. \${viewModel.exchangeRate?.promedio.toStringAsFixed(4) ?? '---'}",
+                  "Bs. ${viewModel.exchangeRate?.promedio.toStringAsFixed(4) ?? '---'}",
                   style: TextStyle(
                     fontSize: 24.sp,
                     fontWeight: FontWeight.w700,

@@ -6,7 +6,7 @@ import '../../viewmodels/history_viewmodel.dart';
 import '../theme/app_theme.dart';
 
 class HistoryScreen extends StatefulWidget {
-  const HistoryScreen({Key? key}) : super(key: key);
+  const HistoryScreen({super.key});
 
   @override
   State<HistoryScreen> createState() => _HistoryScreenState();
@@ -18,6 +18,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     super.initState();
     // Refresh history when opening the screen
     Future.microtask(() {
+      if (!mounted) return;
       context.read<HistoryViewModel>().loadHistory();
     });
   }
@@ -28,7 +29,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppTheme.bgMain,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         title: const Text('Historial de Cálculos'),
         actions: [
           if (viewModel.entries.isNotEmpty)
@@ -38,9 +40,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 final confirm = await showDialog<bool>(
                   context: context,
                   builder: (ctx) => AlertDialog(
-                    backgroundColor: AppTheme.bgCard,
-                    title: const Text('Limpiar', style: TextStyle(color: Colors.white)),
-                    content: const Text('¿Eliminar todo el historial?', style: TextStyle(color: AppTheme.textMuted)),
+                    backgroundColor: AppTheme.getBgCard(context),
+                    title: Text('Limpiar', style: TextStyle(color: AppTheme.getTextMain(context))),
+                    content: Text('¿Eliminar todo el historial?', style: TextStyle(color: AppTheme.getTextMuted(context))),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(ctx, false),
@@ -67,7 +69,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               ? Center(
                   child: Text(
                     'No hay operaciones recientes',
-                    style: TextStyle(color: AppTheme.textMuted, fontSize: 16.sp),
+                    style: TextStyle(color: AppTheme.getTextMuted(context), fontSize: 16.sp),
                   ),
                 )
               : ListView.builder(
@@ -84,8 +86,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       margin: EdgeInsets.only(bottom: 12.h),
                       padding: EdgeInsets.all(16.w),
                       decoration: BoxDecoration(
-                        color: const Color(0x08FFFFFF),
-                        border: Border.all(color: AppTheme.glassBorder),
+                        color: AppTheme.isDark(context) ? Colors.white.withAlpha(8) : Colors.black.withAlpha(8),
+                        border: Border.all(color: AppTheme.getGlassBorder(context)),
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Row(
@@ -96,12 +98,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             children: [
                               Text(
                                 dateStr,
-                                style: TextStyle(color: AppTheme.textMuted, fontSize: 12.sp),
+                                style: TextStyle(color: AppTheme.getTextMuted(context), fontSize: 12.sp),
                               ),
                               SizedBox(height: 4.h),
                               Text(
                                 'Tasa: \${entry.rateUsed}',
-                                style: TextStyle(color: Colors.white70, fontSize: 14.sp),
+                                style: TextStyle(color: AppTheme.getTextMain(context).withAlpha(179), fontSize: 14.sp),
                               ),
                             ],
                           ),

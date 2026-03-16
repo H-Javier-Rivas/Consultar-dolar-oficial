@@ -9,14 +9,28 @@ class AppTheme {
   static const Color accent = Color(0xFF8b5cf6);
   static const Color error = Color(0xFFef4444);
 
-  // Dark Theme Backgrounds
+  // Dark Theme Colors
   static const Color bgMain = Color(0xFF020617);
   static const Color bgCard = Color(0xB31E293B); // rgba(30, 41, 59, 0.7)
   static const Color glassBorder = Color(0x1AFFFFFF); // rgba(255, 255, 255, 0.1)
-
-  // Text
   static const Color textMain = Color(0xFFf8fafc);
   static const Color textMuted = Color(0xFF94a3b8);
+
+  // Light Theme Colors
+  static const Color bgMainLight = Color(0xFFF1F5F9);
+  static const Color bgCardLight = Color(0xB3FFFFFF); // rgba(255, 255, 255, 0.7)
+  static const Color glassBorderLight = Color(0x330F172A); // rgba(15, 23, 42, 0.2)
+  static const Color textMainLight = Color(0xFF0F172A);
+  static const Color textMutedLight = Color(0xFF64748B);
+
+  // Helper to get colors based on context
+  static bool isDark(BuildContext context) => Theme.of(context).brightness == Brightness.dark;
+  
+  static Color getBgMain(BuildContext context) => isDark(context) ? bgMain : bgMainLight;
+  static Color getBgCard(BuildContext context) => isDark(context) ? bgCard : bgCardLight;
+  static Color getGlassBorder(BuildContext context) => isDark(context) ? glassBorder : glassBorderLight;
+  static Color getTextMain(BuildContext context) => isDark(context) ? textMain : textMainLight;
+  static Color getTextMuted(BuildContext context) => isDark(context) ? textMuted : textMutedLight;
 }
 
 // Glassmorphism reusable box
@@ -27,34 +41,39 @@ class GlassBox extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
   final double borderRadius;
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   const GlassBox({
-    Key? key,
+    super.key,
     required this.child,
     this.width = double.infinity,
     this.height,
     this.padding = const EdgeInsets.all(20.0),
     this.margin,
     this.borderRadius = 24.0,
-    this.backgroundColor = AppTheme.bgCard,
-  }) : super(key: key);
+    this.backgroundColor,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final bgColor = backgroundColor ?? AppTheme.getBgCard(context);
+    final borderColor = AppTheme.getGlassBorder(context);
+
     return Container(
       width: width,
       height: height,
       margin: margin,
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: bgColor,
         borderRadius: BorderRadius.circular(borderRadius),
-        border: Border.all(color: AppTheme.glassBorder),
-        boxShadow: const [
+        border: Border.all(color: borderColor),
+        boxShadow: [
           BoxShadow(
-            color: Color(0x5E000000), // rgba(0, 0, 0, 0.37)
+            color: AppTheme.isDark(context) 
+                ? const Color(0x5E000000) 
+                : const Color(0x1A000000),
             blurRadius: 32,
-            offset: Offset(0, 8),
+            offset: const Offset(0, 8),
           )
         ],
       ),

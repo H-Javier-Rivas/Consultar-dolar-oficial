@@ -9,7 +9,7 @@ class ExchangeRateService {
 
   Future<ExchangeRateModel> getOfficialRate() async {
     final baseUrl = dotenv.env['API_BASE_URL'] ?? 'https://ve.dolarapi.com/v1';
-    final url = '\$baseUrl/dolares/oficial';
+    final url = '$baseUrl/dolares/oficial';
 
     try {
       final data = await _networkService.get(url);

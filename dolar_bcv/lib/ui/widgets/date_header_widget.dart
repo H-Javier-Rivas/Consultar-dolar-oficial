@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import '../theme/app_theme.dart';
 
 class DateHeaderWidget extends StatelessWidget {
-  const DateHeaderWidget({Key? key}) : super(key: key);
+  const DateHeaderWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +20,11 @@ class DateHeaderWidget extends StatelessWidget {
       padding: EdgeInsets.all(16.w),
       margin: EdgeInsets.only(bottom: 24.h),
       decoration: BoxDecoration(
-        color: const Color(0x0DFFFFFF), // rgba(255, 255, 255, 0.05)
+        color: AppTheme.isDark(context) 
+            ? AppTheme.bgCard.withAlpha(51) 
+            : AppTheme.bgCardLight.withAlpha(128),
         borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(color: AppTheme.getGlassBorder(context)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -44,7 +47,7 @@ class DateHeaderWidget extends StatelessWidget {
                     monthStr,
                     style: TextStyle(
                       fontSize: 14.sp,
-                      color: AppTheme.textMuted,
+                      color: AppTheme.getTextMuted(context),
                       letterSpacing: 1.0,
                     ),
                   ),
@@ -52,7 +55,7 @@ class DateHeaderWidget extends StatelessWidget {
                     yearStr,
                     style: TextStyle(
                       fontSize: 14.sp,
-                      color: AppTheme.textMuted,
+                      color: AppTheme.getTextMuted(context),
                       letterSpacing: 1.0,
                     ),
                   ),

@@ -5,6 +5,7 @@ import '../models/exchange_rate_model.dart';
 class CacheManager {
   static const String _kRateKey = 'cached_exchange_rate';
   static const String _kTotalsKey = 'cached_totals';
+  static const String _kThemeKey = 'is_dark_mode';
 
   Future<void> saveRate(ExchangeRateModel rate) async {
     final prefs = await SharedPreferences.getInstance();
@@ -35,5 +36,16 @@ class CacheManager {
   Future<double> getCachedTotals() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getDouble(_kTotalsKey) ?? 0.0;
+  }
+
+  // Theme Persistence
+  Future<void> saveThemeMode(bool isDarkMode) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_kThemeKey, isDarkMode);
+  }
+
+  Future<bool> getThemeMode() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_kThemeKey) ?? true; // Default to dark mode
   }
 }

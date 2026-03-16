@@ -5,7 +5,7 @@ import '../../viewmodels/converter_viewmodel.dart';
 import '../theme/app_theme.dart';
 
 class ConverterPanelWidget extends StatelessWidget {
-  const ConverterPanelWidget({Key? key}) : super(key: key);
+  const ConverterPanelWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,17 +19,18 @@ class ConverterPanelWidget extends StatelessWidget {
           child: Column(
             children: [
               TextField(
+                controller: viewModel.inputController,
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 20.sp, color: Colors.white),
+                style: TextStyle(fontSize: 20.sp, color: AppTheme.getTextMain(context)),
                 decoration: InputDecoration(
                   hintText: '💰 Ingresa monto',
-                  hintStyle: TextStyle(color: AppTheme.textMuted, fontSize: 16.sp),
+                  hintStyle: TextStyle(color: AppTheme.getTextMuted(context), fontSize: 16.sp),
                   filled: true,
-                  fillColor: const Color(0x0DFFFFFF),
+                  fillColor: AppTheme.isDark(context) ? Colors.white.withAlpha(13) : Colors.black.withAlpha(13),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.r),
-                    borderSide: const BorderSide(color: AppTheme.glassBorder),
+                    borderSide: BorderSide(color: AppTheme.getGlassBorder(context)),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.r),
@@ -40,30 +41,39 @@ class ConverterPanelWidget extends StatelessWidget {
               ),
               SizedBox(height: 16.h),
               Container(
-                padding: EdgeInsets.all(8.w),
+                width: double.infinity,
                 decoration: BoxDecoration(
-                  color: const Color(0x0DFFFFFF),
+                  color: AppTheme.isDark(context) ? Colors.white.withAlpha(13) : Colors.black.withAlpha(13),
                   borderRadius: BorderRadius.circular(12.r),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _CurrencyToggle(
-                      title: 'Bs.',
-                      isSelected: viewModel.isBsMode,
-                      onTap: () {
-                        if (!viewModel.isBsMode) viewModel.toggleCurrencyMode();
-                      },
+                child: SegmentedButton<bool>(
+                  segments: const [
+                    ButtonSegment<bool>(
+                      value: true,
+                      label: Text('Bs.'),
+                      icon: Icon(Icons.money),
                     ),
-                    SizedBox(width: 32.w),
-                    _CurrencyToggle(
-                      title: 'USD \$',
-                      isSelected: !viewModel.isBsMode,
-                      onTap: () {
-                        if (viewModel.isBsMode) viewModel.toggleCurrencyMode();
-                      },
+                    ButtonSegment<bool>(
+                      value: false,
+                      label: Text('USD \$'),
+                      icon: Icon(Icons.attach_money),
                     ),
                   ],
+                  selected: {viewModel.isBsMode},
+                  onSelectionChanged: (Set<bool> newSelection) {
+                    if (newSelection.first != viewModel.isBsMode) {
+                      viewModel.toggleCurrencyMode();
+                    }
+                  },
+                  showSelectedIcon: false,
+                  style: SegmentedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    selectedBackgroundColor: AppTheme.primary,
+                    selectedForegroundColor: Colors.white,
+                    foregroundColor: AppTheme.getTextMuted(context),
+                    side: BorderSide.none,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                  ),
                 ),
               ),
             ],
@@ -73,10 +83,10 @@ class ConverterPanelWidget extends StatelessWidget {
         
         // Subtotal y Botones Acción
         Text(
-          'Subtotal: Bs. \${viewModel.computedSubtotalBs.toStringAsFixed(2)}',
+          'Subtotal: Bs. ${viewModel.computedSubtotalBs.toStringAsFixed(2)}',
           style: TextStyle(
             fontSize: 20.sp,
-            color: AppTheme.textMuted,
+            color: AppTheme.getTextMuted(context),
           ),
         ),
         SizedBox(height: 16.h),
@@ -97,43 +107,6 @@ class ConverterPanelWidget extends StatelessWidget {
           ],
         ),
       ],
-    );
-  }
-}
-
-class _CurrencyToggle extends StatelessWidget {
-  final String title;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _CurrencyToggle({
-    required this.title,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Row(
-        children: [
-          Radio<bool>(
-            value: true,
-            groupValue: isSelected,
-            onChanged: (_) => onTap(),
-            activeColor: AppTheme.primary,
-          ),
-          Text(
-            title,
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 16.sp,
-              color: isSelected ? Colors.white : AppTheme.textMuted,
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

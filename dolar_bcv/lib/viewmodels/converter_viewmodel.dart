@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import '../data/local/cache_manager.dart';
 import '../data/local/database_helper.dart';
 import '../data/models/exchange_rate_model.dart';
@@ -9,6 +9,7 @@ class ConverterViewModel extends ChangeNotifier {
   final ExchangeRateService _apiService;
   final CacheManager _cacheManager;
   final DatabaseHelper _dbHelper = DatabaseHelper.instance;
+  final TextEditingController inputController = TextEditingController();
 
   // State
   ExchangeRateModel? _exchangeRate;
@@ -88,6 +89,7 @@ class ConverterViewModel extends ChangeNotifier {
     ));
 
     _inputValue = '';
+    inputController.clear();
     notifyListeners();
   }
 
@@ -109,13 +111,21 @@ class ConverterViewModel extends ChangeNotifier {
     ));
 
     _inputValue = '';
+    inputController.clear();
     notifyListeners();
   }
 
   Future<void> clearAll() async {
     _totalBs = 0.0;
     _inputValue = '';
+    inputController.clear();
     await _cacheManager.saveTotals(bolivares: 0.0);
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    inputController.dispose();
+    super.dispose();
   }
 }
