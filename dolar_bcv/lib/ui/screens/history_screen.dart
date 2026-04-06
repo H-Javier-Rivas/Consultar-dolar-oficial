@@ -90,8 +90,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         border: Border.all(color: AppTheme.getGlassBorder(context)),
                         borderRadius: BorderRadius.circular(12.r),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,19 +100,29 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 dateStr,
                                 style: TextStyle(color: AppTheme.getTextMuted(context), fontSize: 12.sp),
                               ),
-                              SizedBox(height: 4.h),
+                              SizedBox(height: 2.h),
                               Text(
-                                'Tasa: \${entry.rateUsed}',
-                                style: TextStyle(color: AppTheme.getTextMain(context).withAlpha(179), fontSize: 14.sp),
+                                'Tasa: ${entry.rateUsed}',
+                                style: TextStyle(
+                                  color: AppTheme.getTextMain(context).withAlpha(153), 
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ],
                           ),
-                          Text(
-                            "\${isPositive ? '+' : '-'} Bs. \${entry.amountBs.toStringAsFixed(2)}",
-                            style: TextStyle(
-                              color: isPositive ? AppTheme.primary : AppTheme.error,
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.bold,
+                          SizedBox(height: 12.h),
+                          FittedBox(
+                            fit: BoxFit.scaleDown,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "${isPositive ? '+' : '-'} Bs. ${entry.amountBs.toStringAsFixed(2)}",
+                              style: TextStyle(
+                                color: isPositive ? AppTheme.primary : AppTheme.error,
+                                fontSize: 22.sp,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: -0.5,
+                              ),
                             ),
                           ),
                         ],

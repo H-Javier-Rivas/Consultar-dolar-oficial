@@ -147,12 +147,25 @@ class ConverterPanelWidget extends StatelessWidget {
         SizedBox(height: 24.h),
         
         // Subtotal y Botones Acción
-        Text(
-          'Subtotal: Bs. ${viewModel.computedSubtotalBs.toStringAsFixed(2)} (\$ ${viewModel.computedSubtotalUsd.toStringAsFixed(2)})',
-          style: TextStyle(
-            fontSize: 20.sp,
-            color: AppTheme.getTextMuted(context),
-          ),
+        Column(
+          children: [
+            Text(
+              'Subtotal: Bs. ${viewModel.computedSubtotalBs.toStringAsFixed(2)}',
+              style: TextStyle(
+                fontSize: 20.sp,
+                fontWeight: FontWeight.w600,
+                color: AppTheme.getTextMuted(context),
+              ),
+            ),
+            Text(
+              '\$ ${viewModel.computedSubtotalUsd.toStringAsFixed(2)}',
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w700,
+                color: AppTheme.secondary,
+              ),
+            ),
+          ],
         ),
         SizedBox(height: 16.h),
         Row(
