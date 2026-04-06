@@ -33,6 +33,10 @@
 
 <body>
   <main class="container">
+    <nav class="top-nav">
+      <span class="app-title">Dolar BCV Premium</span>
+      <button id="theme-toggle" class="icon-button" title="Cambiar tema">🌓</button>
+    </nav>
     <header class="date">
       <div class="dateRight">
         <div id="dateNumber"></div>
@@ -47,8 +51,15 @@
     <section class="hero-section">
       <h1>Calculadora de Mercado</h1>
       <div class="tasa-card" id="tasa-container">
-        <p>Tasa Oficial BCV</p>
-        <div>Bs. <span id="cambio-dolar">Cargando...</span></div>
+        <div class="tasa-header">
+          <p>Tasa Seleccionada</p>
+          <div class="tasa-selector">
+            <button class="tasa-chip active" data-tasa="bcv">BCV</button>
+            <button class="tasa-chip" data-tasa="usdt">USDT</button>
+            <button class="tasa-chip" data-tasa="manual">Manual</button>
+          </div>
+        </div>
+        <div class="tasa-value">Bs. <span id="cambio-dolar">Cargando...</span></div>
       </div>
     </section>
 
@@ -69,7 +80,16 @@
       </div>
 
       <div class="calcular">
-        <div class="monto-bs">Subtotal: Bs. <span id="precio-bs">0.00</span></div>
+        <div class="subtotal-container">
+          <div class="subtotal-item">
+            <span class="label">Subtotal Bs.</span>
+            <span id="precio-bs">0,00</span>
+          </div>
+          <div class="subtotal-item">
+            <span class="label">Subtotal USD</span>
+            <span id="precio-usd">0.00</span>
+          </div>
+        </div>
         <div class="actions">
           <button id="restar" title="Restar monto">➖</button>
           <span class="cart-icon" style="font-size: 1.5rem;">🛒</span>
