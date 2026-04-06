@@ -21,7 +21,8 @@ const initTheme = () => {
 };
 
 const updateThemeIcon = (theme) => {
-    themeToggle.textContent = theme === 'dark' ? '🌙' : '☀️';
+    // Show SUN in dark mode, MOON in light mode
+    themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
 };
 
 themeToggle.addEventListener('click', () => {
@@ -146,7 +147,7 @@ document.getElementById('restar').addEventListener('click', () => modifyTotal(-1
 
 window.handleConverterSubmit = (event) => {
     event.preventDefault();
-    modifyTotal(1);
+    precioRefTxt.blur(); // Just close the keyboard as requested
 };
 
 document.getElementById('bye-bye').addEventListener('click', () => {
