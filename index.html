@@ -64,20 +64,22 @@
     </section>
 
     <section class="converter-section">
-      <div class="converter">
-        <input type="number" id="precio-ref" placeholder="💰 Ingresa monto" step="0.01" required>
-        
-        <div class="currency-toggle">
-          <label>
-            <input type="radio" name="currency" value="bolivares" id="precio-bs-chk" checked>
-            <span>Bs.</span>
-          </label>
-          <label>
-            <input type="radio" name="currency" value="dolares" id="precio-dolar-chk">
-            <span>USD $</span>
-          </label>
+      <form id="converter-form" onsubmit="handleConverterSubmit(event)">
+        <div class="converter">
+          <input type="number" id="precio-ref" inputmode="decimal" placeholder="💰 Ingresa monto" step="0.01" required>
+          
+          <div class="currency-toggle">
+            <label>
+              <input type="radio" name="currency" value="bolivares" id="precio-bs-chk" checked>
+              <span>Bs.</span>
+            </label>
+            <label>
+              <input type="radio" name="currency" value="dolares" id="precio-dolar-chk">
+              <span>USD $</span>
+            </label>
+          </div>
         </div>
-      </div>
+      </form>
 
       <div class="calcular">
         <div class="subtotal-container">

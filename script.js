@@ -144,6 +144,11 @@ function modifyTotal(multiplier) {
 document.getElementById('sumar').addEventListener('click', () => modifyTotal(1));
 document.getElementById('restar').addEventListener('click', () => modifyTotal(-1));
 
+window.handleConverterSubmit = (event) => {
+    event.preventDefault();
+    modifyTotal(1);
+};
+
 document.getElementById('bye-bye').addEventListener('click', () => {
     if (confirm("¿Seguro que quieres limpiar todo?")) {
         bolivaresTotal.textContent = '0,00';
