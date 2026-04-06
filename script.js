@@ -21,7 +21,8 @@ const initTheme = () => {
 };
 
 const updateThemeIcon = (theme) => {
-    themeToggle.textContent = theme === 'dark' ? '🌙' : '☀️';
+    // Show SUN in dark mode (to change to light), MOON in light mode (to change to dark)
+    themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
 };
 
 themeToggle.addEventListener('click', () => {
