@@ -47,3 +47,11 @@ assets/.env
 /android/build/
 /android/.vscode/
 .vscode/
+
+# User Documents and Temporary Analysis
+*.docx
+*.doc
+Bitácora*
+analysis.txt
+analysis.json
+**/Documentación/
