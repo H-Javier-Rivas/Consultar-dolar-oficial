@@ -3,18 +3,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/exchange_rate_model.dart';
 
 class CacheManager {
-  static const String _kRateKey = 'cached_exchange_rate';
+  static const String _kOfficialRateKey = 'cached_exchange_rate_official';
+  static const String _kParallelRateKey = 'cached_exchange_rate_parallel';
   static const String _kTotalsKey = 'cached_totals';
   static const String _kThemeKey = 'is_dark_mode';
 
-  Future<void> saveRate(ExchangeRateModel rate) async {
+  Future<void> saveRate(ExchangeRateModel rate, {bool isOfficial = true}) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_kRateKey, jsonEncode(rate.toJson()));
+    final key = isOfficial ? _kOfficialRateKey : _kParallelRateKey;
+    await prefs.setString(key, jsonEncode(rate.toJson()));
   }
 
-  Future<ExchangeRateModel?> getCachedRate() async {
+  Future<ExchangeRateModel?> getCachedRate({bool isOfficial = true}) async {
     final prefs = await SharedPreferences.getInstance();
-    final String? dataString = prefs.getString(_kRateKey);
+    final key = isOfficial ? _kOfficialRateKey : _kParallelRateKey;
+    final String? dataString = prefs.getString(key);
 
     if (dataString != null) {
       try {

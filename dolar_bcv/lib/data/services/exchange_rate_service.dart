@@ -15,7 +15,18 @@ class ExchangeRateService {
       final data = await _networkService.get(url);
       return ExchangeRateModel.fromJson(data);
     } catch (e) {
-      // Re-throw to be handled by the ViewModel (and fallback to cache)
+      rethrow;
+    }
+  }
+
+  Future<ExchangeRateModel> getParallelRate() async {
+    final baseUrl = dotenv.env['API_BASE_URL'] ?? 'https://ve.dolarapi.com/v1';
+    final url = '$baseUrl/dolares/paralelo';
+
+    try {
+      final data = await _networkService.get(url);
+      return ExchangeRateModel.fromJson(data);
+    } catch (e) {
       rethrow;
     }
   }

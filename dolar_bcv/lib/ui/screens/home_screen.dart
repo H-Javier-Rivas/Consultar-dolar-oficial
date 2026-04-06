@@ -22,14 +22,15 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          'Dolar BVC Premium',
+          'Dolar BCV Premium',
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20.sp),
         ),
         actions: [
           IconButton(
             icon: Icon(
-              themeVM.isDarkMode ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
+              themeVM.isDarkMode ? Icons.wb_sunny_rounded : Icons.nightlight_round,
               size: 26.sp,
+              color: themeVM.isDarkMode ? Colors.amber : Colors.blueGrey,
             ),
             onPressed: () => themeVM.toggleTheme(),
           ),

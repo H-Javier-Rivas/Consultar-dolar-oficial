@@ -12,12 +12,25 @@ class RateCardWidget extends StatelessWidget {
     // Escucha cambios en ConverterViewModel
     final viewModel = context.watch<ConverterViewModel>();
 
+    String title;
+    switch (viewModel.activeSource) {
+      case RateSource.bcv:
+        title = 'Tasa Oficial BCV';
+        break;
+      case RateSource.usdt:
+        title = 'Tasa USDT (Paralelo)';
+        break;
+      case RateSource.custom:
+        title = 'Tasa Personalizada';
+        break;
+    }
+
     return Container(
-      margin: EdgeInsets.only(bottom: 32.h),
-      padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 24.w),
+      margin: EdgeInsets.only(bottom: 24.h),
+      padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
       decoration: BoxDecoration(
-        color: AppTheme.primary.withAlpha(26), // rgba(16, 185, 129, 0.1)
-        border: Border.all(color: AppTheme.primary.withAlpha(51)), // rgba(16, 185, 129, 0.2)
+        color: AppTheme.primary.withAlpha(26),
+        border: Border.all(color: AppTheme.primary.withAlpha(51)),
         borderRadius: BorderRadius.circular(16.r),
       ),
       child: Column(
@@ -26,29 +39,30 @@ class RateCardWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Tasa Oficial BCV',
+                title,
                 style: TextStyle(
                   fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
                   color: AppTheme.getTextMuted(context),
                 ),
               ),
-              if (viewModel.isOffline) ...[
+              if (viewModel.isOffline && viewModel.activeSource != RateSource.custom) ...[
                 SizedBox(width: 8.w),
                 Icon(Icons.wifi_off, color: AppTheme.secondary, size: 16.sp),
               ]
             ],
           ),
           SizedBox(height: 4.h),
-          viewModel.isLoading
+          viewModel.isLoading && viewModel.activeSource != RateSource.custom
               ? SizedBox(
-                  height: 32.h,
-                  width: 32.h,
-                  child: const CircularProgressIndicator(color: AppTheme.primary),
+                  height: 24.h,
+                  width: 24.h,
+                  child: const CircularProgressIndicator(color: AppTheme.primary, strokeWidth: 2),
                 )
               : Text(
-                  "Bs. ${viewModel.exchangeRate?.promedio.toStringAsFixed(4) ?? '---'}",
+                  "Bs. ${viewModel.currentRate.toStringAsFixed(4)}",
                   style: TextStyle(
-                    fontSize: 24.sp,
+                    fontSize: 22.sp,
                     fontWeight: FontWeight.w700,
                     color: AppTheme.primary,
                   ),

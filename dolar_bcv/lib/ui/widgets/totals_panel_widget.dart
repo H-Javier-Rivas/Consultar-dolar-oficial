@@ -39,7 +39,7 @@ class TotalsPanelWidget extends StatelessWidget {
         ),
         SizedBox(height: 16.h),
         Text(
-          viewModel.totalBs.toStringAsFixed(2),
+          'Bs. ${viewModel.totalBs.toStringAsFixed(2)}',
           style: TextStyle(
             fontSize: 48.sp,
             fontWeight: FontWeight.w700,

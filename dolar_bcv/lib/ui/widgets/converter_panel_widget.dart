@@ -13,7 +13,72 @@ class ConverterPanelWidget extends StatelessWidget {
 
     return Column(
       children: [
-        // Input y Toggles
+        // Selector de Fuente de Tasa
+        GlassBox(
+          padding: EdgeInsets.all(12.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Fuente de la tasa:',
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                  color: AppTheme.getTextMuted(context),
+                ),
+              ),
+              SizedBox(height: 8.h),
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: AppTheme.isDark(context) ? Colors.white.withAlpha(13) : Colors.black.withAlpha(13),
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: SegmentedButton<RateSource>(
+                  segments: const [
+                    ButtonSegment(value: RateSource.bcv, label: Text('BCV'), icon: Icon(Icons.account_balance)),
+                    ButtonSegment(value: RateSource.usdt, label: Text('USDT'), icon: Icon(Icons.currency_bitcoin)),
+                    ButtonSegment(value: RateSource.custom, label: Text('Propia'), icon: Icon(Icons.edit)),
+                  ],
+                  selected: {viewModel.activeSource},
+                  onSelectionChanged: (Set<RateSource> selection) {
+                    viewModel.setRateSource(selection.first);
+                  },
+                  showSelectedIcon: false,
+                  style: SegmentedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    selectedBackgroundColor: AppTheme.secondary.withAlpha(204),
+                    selectedForegroundColor: Colors.black,
+                    foregroundColor: AppTheme.getTextMuted(context),
+                    side: BorderSide.none,
+                    textStyle: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+                  ),
+                ),
+              ),
+              if (viewModel.activeSource == RateSource.custom) ...[
+                SizedBox(height: 12.h),
+                TextField(
+                  controller: viewModel.customRateController,
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  style: TextStyle(fontSize: 16.sp, color: AppTheme.getTextMain(context)),
+                  decoration: InputDecoration(
+                    hintText: 'Ingresa tasa manual',
+                    hintStyle: TextStyle(color: AppTheme.getTextMuted(context), fontSize: 14.sp),
+                    prefixIcon: const Icon(Icons.edit_note, color: AppTheme.secondary),
+                    filled: true,
+                    fillColor: AppTheme.isDark(context) ? Colors.white.withAlpha(8) : Colors.black.withAlpha(8),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r), borderSide: BorderSide.none),
+                  ),
+                  onChanged: (val) => viewModel.updateCustomRate(val),
+                ),
+              ],
+            ],
+          ),
+        ),
+        SizedBox(height: 16.h),
+
+        // Input y Toggles de Moneda
         GlassBox(
           padding: EdgeInsets.all(16.w),
           child: Column(
@@ -83,7 +148,7 @@ class ConverterPanelWidget extends StatelessWidget {
         
         // Subtotal y Botones Acción
         Text(
-          'Subtotal: Bs. ${viewModel.computedSubtotalBs.toStringAsFixed(2)}',
+          'Subtotal: Bs. ${viewModel.computedSubtotalBs.toStringAsFixed(2)} (\$ ${viewModel.computedSubtotalUsd.toStringAsFixed(2)})',
           style: TextStyle(
             fontSize: 20.sp,
             color: AppTheme.getTextMuted(context),

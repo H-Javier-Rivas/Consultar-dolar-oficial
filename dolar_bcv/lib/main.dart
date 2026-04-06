@@ -57,7 +57,7 @@ class DolarBcvApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) {
         return MaterialApp(
-          title: 'Dolar BVC Premium',
+          title: 'Dolar BCV Premium',
           debugShowCheckedModeBanner: false,
           themeMode: themeVM.isDarkMode ? ThemeMode.dark : ThemeMode.light,
           theme: ThemeData(
