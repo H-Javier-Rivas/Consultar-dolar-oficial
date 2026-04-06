@@ -245,10 +245,22 @@ const setDate = () => {
     document.getElementById('dateYear').textContent = date.getFullYear();
 };
 
+// Fix mobile zoom on blur
+const fixMobileZoom = () => {
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => {
+        input.addEventListener('blur', () => {
+            window.scrollTo(0, 0);
+            document.body.scrollTop = 0;
+        });
+    });
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     initTheme();
     setDate();
     fetchRates();
     loadTasks();
     loadAppState();
+    fixMobileZoom();
 });
