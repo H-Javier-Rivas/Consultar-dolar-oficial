@@ -3,22 +3,41 @@
 :root {
     /* Color Palette - Premium Emerald & Gold */
     --primary: #10b981;
+    --primary-light: #34d399;
     --primary-dark: #059669;
     --secondary: #fbbf24;
     --accent: #8b5cf6;
     
-    /* Dark Theme Backgrounds */
+    /* Transitions */
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base Dark Theme (Default) */
+:root, [data-theme="dark"] {
     --bg-main: #020617;
     --bg-card: rgba(30, 41, 59, 0.7);
     --glass-border: rgba(255, 255, 255, 0.1);
     --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    
-    /* Text */
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
-    
-    /* Transitions */
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --card-accent: rgba(16, 185, 129, 0.1);
+    --card-border: rgba(16, 185, 129, 0.2);
+    --input-bg: rgba(255, 255, 255, 0.05);
+    --heading-bg: linear-gradient(to right, #fff, var(--text-muted));
+}
+
+/* Light Theme */
+[data-theme="light"] {
+    --bg-main: #f1f5f9;
+    --bg-card: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(0, 0, 0, 0.05);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --card-accent: rgba(16, 185, 129, 0.05);
+    --card-border: rgba(16, 185, 129, 0.1);
+    --input-bg: rgba(0, 0, 0, 0.05);
+    --heading-bg: var(--text-main);
 }
 
 * {
@@ -29,15 +48,21 @@
 
 body {
     font-family: 'Outfit', sans-serif;
-    background: radial-gradient(circle at top right, #064e3b, #020617 60%);
+    background: var(--bg-main);
     background-attachment: fixed;
     color: var(--text-main);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 2rem 1rem;
-    line-height: 1.5;
+}
+
+[data-theme="dark"] body {
+    background: radial-gradient(circle at top right, #064e3b, #020617 60%);
+}
+
+[data-theme="light"] body {
+    background: radial-gradient(circle at top right, #dcfce7, #f1f5f9 60%);
 }
 
 /* Glassmorphism Container */
@@ -54,9 +79,37 @@ body {
     animation: fadeIn 0.8s ease-out;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+/* Navigation */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.app-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.icon-button {
+    background: var(--glass-border);
+    border: 1px solid var(--glass-border);
+    color: var(--text-main);
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.icon-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(15deg);
 }
 
 header.date {
@@ -98,29 +151,64 @@ h1 {
     font-size: 1.75rem;
     font-weight: 700;
     margin-bottom: 1.5rem;
-    background: linear-gradient(to right, #fff, var(--text-muted));
+    background: var(--heading-bg);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
 .tasa-card {
-    background: rgba(16, 185, 129, 0.1);
-    border: 1px solid rgba(16, 185, 129, 0.2);
-    padding: 1rem;
-    border-radius: 16px;
+    background: var(--card-accent);
+    border: 1px solid var(--card-border);
+    padding: 1.5rem;
+    border-radius: 20px;
     margin-bottom: 2rem;
     text-align: center;
 }
 
-.tasa-card p {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin-bottom: 0.25rem;
+.tasa-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    align-items: center;
 }
 
-#cambio-dolar {
-    font-size: 1.5rem;
+.tasa-header p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tasa-selector {
+    display: flex;
+    gap: 0.5rem;
+    background: rgba(0, 0, 0, 0.1);
+    padding: 0.35rem;
+    border-radius: 12px;
+}
+
+.tasa-chip {
+    padding: 0.4rem 1rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: transparent;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.tasa-chip.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+}
+
+.tasa-value {
+    font-size: 1.75rem;
     font-weight: 700;
     color: var(--primary);
 }
@@ -135,11 +223,11 @@ h1 {
 
 #precio-ref {
     width: 100%;
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--input-bg);
     border: 1px solid var(--glass-border);
     border-radius: 12px;
     padding: 1rem;
-    color: white;
+    color: var(--text-main);
     font-size: 1.1rem;
     text-align: center;
     transition: var(--transition);
@@ -179,15 +267,31 @@ h1 {
     margin-bottom: 2rem;
 }
 
-.monto-bs {
-    font-size: 1.25rem;
-    color: var(--text-muted);
-    margin-bottom: 1rem;
+.subtotal-container {
+    display: flex;
+    justify-content: space-around;
+    background: var(--glass-border);
+    padding: 1.25rem;
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
 }
 
-#precio-bs {
-    color: var(--text-main);
+.subtotal-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.subtotal-item .label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
     font-weight: 600;
+}
+
+.subtotal-item span:not(.label) {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-main);
 }
 
 .actions {
@@ -281,11 +385,11 @@ form {
 
 form input[type="text"] {
     flex: 1;
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--input-bg);
     border: 1px solid var(--glass-border);
     padding: 0.75rem 1rem;
     border-radius: 12px;
-    color: white;
+    color: var(--text-main);
 }
 
 .addTaskButton, .orderButton, .clearDoneButton {
