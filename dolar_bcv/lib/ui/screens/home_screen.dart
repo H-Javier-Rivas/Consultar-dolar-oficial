@@ -8,6 +8,7 @@ import '../widgets/date_header_widget.dart';
 import '../widgets/rate_card_widget.dart';
 import '../widgets/todo_section_widget.dart';
 import '../widgets/totals_panel_widget.dart';
+import '../widgets/support_button.dart';
 import 'history_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -26,6 +27,7 @@ class HomeScreen extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20.sp),
         ),
         actions: [
+          const SupportButton(),
           IconButton(
             icon: Icon(
               themeVM.isDarkMode ? Icons.wb_sunny_rounded : Icons.nightlight_round,
