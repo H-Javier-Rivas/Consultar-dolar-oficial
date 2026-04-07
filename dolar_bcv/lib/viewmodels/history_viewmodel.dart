@@ -3,7 +3,7 @@ import '../data/local/database_helper.dart';
 import '../data/models/history_entry_model.dart';
 
 class HistoryViewModel extends ChangeNotifier {
-  final DatabaseHelper _dbHelper = DatabaseHelper.instance;
+  final DatabaseHelper _dbHelper;
 
   List<HistoryEntryModel> _entries = [];
   bool _isLoading = false;
@@ -11,7 +11,7 @@ class HistoryViewModel extends ChangeNotifier {
   List<HistoryEntryModel> get entries => _entries;
   bool get isLoading => _isLoading;
 
-  HistoryViewModel() {
+  HistoryViewModel({DatabaseHelper? dbHelper}) : _dbHelper = dbHelper ?? DatabaseHelper.instance {
     loadHistory();
   }
 

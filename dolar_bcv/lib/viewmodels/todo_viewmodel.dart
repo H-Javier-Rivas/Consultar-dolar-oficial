@@ -3,7 +3,7 @@ import '../data/local/database_helper.dart';
 import '../data/models/todo_item_model.dart';
 
 class TodoViewModel extends ChangeNotifier {
-  final DatabaseHelper _dbHelper = DatabaseHelper.instance;
+  final DatabaseHelper _dbHelper;
 
   List<TodoItemModel> _todos = [];
   bool _isLoading = false;
@@ -11,7 +11,7 @@ class TodoViewModel extends ChangeNotifier {
   List<TodoItemModel> get todos => _todos;
   bool get isLoading => _isLoading;
 
-  TodoViewModel() {
+  TodoViewModel({DatabaseHelper? dbHelper}) : _dbHelper = dbHelper ?? DatabaseHelper.instance {
     loadTodos();
   }
 

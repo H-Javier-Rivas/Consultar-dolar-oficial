@@ -10,7 +10,7 @@ enum RateSource { bcv, usdt, custom }
 class ConverterViewModel extends ChangeNotifier {
   final ExchangeRateService _apiService;
   final CacheManager _cacheManager;
-  final DatabaseHelper _dbHelper = DatabaseHelper.instance;
+  final DatabaseHelper _dbHelper;
   final TextEditingController inputController = TextEditingController();
   final TextEditingController customRateController = TextEditingController();
 
@@ -58,7 +58,8 @@ class ConverterViewModel extends ChangeNotifier {
 
   double get computedSubtotalUsd => computedSubtotalBs / currentRate;
 
-  ConverterViewModel(this._apiService, this._cacheManager) {
+  ConverterViewModel(this._apiService, this._cacheManager, {DatabaseHelper? dbHelper})
+      : _dbHelper = dbHelper ?? DatabaseHelper.instance {
     _init();
   }
 
